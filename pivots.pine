@@ -14,38 +14,16 @@ showWeekly = input(title="[Camarilla] Show Weekly", defval=true)
 showWeeklyMinors = input(title="[Camarilla] Show Weekly L1H1-L2H2", defval=false)
 weeklyWidth = input(title="[Camarilla] Weekly Width", defval=1)
 showDaily = input(title="[Camarilla] Show Daily", defval=true)
-showDailyMinors = input(title="[Camarilla] Show Daily L1H1-L2H2", defval=false)
 dailyWidth = input(title="[Camarilla] Daily Width", defval=1)
 
 // Line Style
-linestyle = lstyle == 'Solid' ? plot.style_line :
+camLineStyle = lstyle == 'Solid' ? plot.style_line :
    lstyle == 'Circles' ? plot.style_circles : plot.style_cross
 
-// Label for S/R
-chper = time - time[1]
-chper := change(chper) > 0 ? chper[1] : chper
+label_offset = time - time[1]
+label_offset := change(label_offset) > 0 ? label_offset[1] : label_offset
 
-Round_it(valu)=>
-    a = 0
-    num = syminfo.mintick
-    s = valu
-    if na(s)
-        s := syminfo.mintick
-    if num < 1
-        for i = 1 to 20
-            num := num * 10
-            if num > 1
-                break
-            a := a +1
-    for x = 1 to a 
-        s := s * 10
-    s := round(s)
-    for x = 1 to a
-        s := s / 10
-    s := s < syminfo.mintick  ? syminfo.mintick : s
-    s
-
-// Main camarilla function
+// Main Camarilla function
 getData(t) =>
     highhtf = security(syminfo.tickerid, t, high[1], lookahead = barmerge.lookahead_on)
     lowhtf = security(syminfo.tickerid, t, low[1], lookahead = barmerge.lookahead_on)
@@ -70,69 +48,65 @@ getData(t) =>
 [mIsLast, mH6, mH5, mH4, mH3, mH2, mH1, mL1, mL2, mL3, mL4, mL5, mL6] = getData("M") 
 
 //color.red
-plot(showMonthly and mIsLast ? mH6 : na, title = "Monthly H6", color = color.red, linewidth = monthlyWidth, style = linestyle, transp = 0)
-plot(showMonthly and mIsLast ? mH5 : na, title = "Monthly H5", color = color.red, linewidth = monthlyWidth, style = linestyle, transp = 0)
-plot(showMonthly and mIsLast ? mH4 : na, title = "Monthly H4", color = color.red, linewidth = monthlyWidth, style = linestyle, transp = 0)
-plot(showMonthly and mIsLast ? mH3 : na, title = "Monthly H3", color = color.red, linewidth = monthlyWidth, style = linestyle, transp = 0)
-plot(showMonthly and mIsLast ? mL3 : na, title = "Monthly L3", color = color.red, linewidth = monthlyWidth, style = linestyle, transp = 0)
-plot(showMonthly and mIsLast ? mL4 : na, title = "Monthly L4", color = color.red, linewidth = monthlyWidth, style = linestyle, transp = 0)
-plot(showMonthly and mIsLast ? mL5 : na, title = "Monthly L5", color = color.red, linewidth = monthlyWidth, style = linestyle, transp = 0)
-plot(showMonthly and mIsLast ? mL6 : na, title = "Monthly L6", color = color.red, linewidth = monthlyWidth, style = linestyle, transp = 0)
-plot(showMonthly and showMonthlyMinors and mIsLast ? mL1 : na, title = "Monthly L1", color = color.red, linewidth = monthlyWidth, style = linestyle, transp = 60)
-plot(showMonthly and showMonthlyMinors and mIsLast ? mL2 : na, title = "Monthly L2", color = color.red, linewidth = monthlyWidth, style = linestyle, transp = 60)
-plot(showMonthly and showMonthlyMinors and mIsLast ? mH1 : na, title = "Monthly H1", color = color.red, linewidth = monthlyWidth, style = linestyle, transp = 60)
-plot(showMonthly and showMonthlyMinors and mIsLast ? mH2 : na, title = "Monthly H2", color = color.red, linewidth = monthlyWidth, style = linestyle, transp = 60)
+plot(showMonthly and mIsLast ? mH6 : na, title = "Monthly H6", color = color.red, linewidth = monthlyWidth, style = camLineStyle, transp = 0)
+plot(showMonthly and mIsLast ? mH5 : na, title = "Monthly H5", color = color.red, linewidth = monthlyWidth, style = camLineStyle, transp = 0)
+plot(showMonthly and mIsLast ? mH4 : na, title = "Monthly H4", color = color.red, linewidth = monthlyWidth, style = camLineStyle, transp = 0)
+plot(showMonthly and mIsLast ? mH3 : na, title = "Monthly H3", color = color.red, linewidth = monthlyWidth, style = camLineStyle, transp = 0)
+plot(showMonthly and mIsLast ? mL3 : na, title = "Monthly L3", color = color.red, linewidth = monthlyWidth, style = camLineStyle, transp = 0)
+plot(showMonthly and mIsLast ? mL4 : na, title = "Monthly L4", color = color.red, linewidth = monthlyWidth, style = camLineStyle, transp = 0)
+plot(showMonthly and mIsLast ? mL5 : na, title = "Monthly L5", color = color.red, linewidth = monthlyWidth, style = camLineStyle, transp = 0)
+plot(showMonthly and mIsLast ? mL6 : na, title = "Monthly L6", color = color.red, linewidth = monthlyWidth, style = camLineStyle, transp = 0)
+plot(showMonthly and showMonthlyMinors and mIsLast ? mL1 : na, title = "Monthly L1", color = color.red, linewidth = monthlyWidth, style = camLineStyle, transp = 60)
+plot(showMonthly and showMonthlyMinors and mIsLast ? mL2 : na, title = "Monthly L2", color = color.red, linewidth = monthlyWidth, style = camLineStyle, transp = 60)
+plot(showMonthly and showMonthlyMinors and mIsLast ? mH1 : na, title = "Monthly H1", color = color.red, linewidth = monthlyWidth, style = camLineStyle, transp = 60)
+plot(showMonthly and showMonthlyMinors and mIsLast ? mH2 : na, title = "Monthly H2", color = color.red, linewidth = monthlyWidth, style = camLineStyle, transp = 60)
 
 // Weekly Pivots
 [ wIsLast, wH6, wH5, wH4, wH3, wH2, wH1, wL1, wL2, wL3, wL4, wL5, wL6] = getData("W")
 
-plot(showWeekly and wIsLast ? wH6 : na, title = "Weekly H6", color = #873dff, linewidth = weeklyWidth, style = linestyle, transp = 0)
-plot(showWeekly and wIsLast ? wH5 : na, title = "Weekly H5", color = #873dff, linewidth = weeklyWidth, style = linestyle, transp = 0)
-plot(showWeekly and wIsLast ? wH4 : na, title = "Weekly H4", color = #873dff, linewidth = weeklyWidth, style = linestyle, transp = 0)
-plot(showWeekly and wIsLast ? wH3 : na, title = "Weekly H3", color = #873dff, linewidth = weeklyWidth, style = linestyle, transp = 0)
-plot(showWeekly and wIsLast ? wL3 : na, title = "Weekly L3", color = #873dff, linewidth = weeklyWidth, style = linestyle, transp = 0)
-plot(showWeekly and wIsLast ? wL4 : na, title = "Weekly L4", color = #873dff, linewidth = weeklyWidth, style = linestyle, transp = 0)
-plot(showWeekly and wIsLast ? wL5 : na, title = "Weekly L5", color = #873dff, linewidth = weeklyWidth, style = linestyle, transp = 0)
-plot(showWeekly and wIsLast ? wL6 : na, title = "Weekly L6", color = #873dff, linewidth = weeklyWidth, style = linestyle, transp = 0)
-plot(showWeekly and showWeeklyMinors and wIsLast ? wL1 : na, title = "Weekly L1", color = #873dff, linewidth = weeklyWidth, style = linestyle, transp = 60)
-plot(showWeekly and showWeeklyMinors and wIsLast ? wL2 : na, title = "Weekly L2", color = #873dff, linewidth = weeklyWidth, style = linestyle, transp = 60)
-plot(showWeekly and showWeeklyMinors and wIsLast ? wH1 : na, title = "Weekly H1", color = #873dff, linewidth = weeklyWidth, style = linestyle, transp = 60)
-plot(showWeekly and showWeeklyMinors and wIsLast ? wH2 : na, title = "Weekly H2", color = #873dff, linewidth = weeklyWidth, style = linestyle, transp = 60)
+plot(showWeekly and wIsLast ? wH6 : na, title = "Weekly H6", color = #873dff, linewidth = weeklyWidth, style = camLineStyle, transp = 0)
+plot(showWeekly and wIsLast ? wH5 : na, title = "Weekly H5", color = #873dff, linewidth = weeklyWidth, style = camLineStyle, transp = 0)
+plot(showWeekly and wIsLast ? wH4 : na, title = "Weekly H4", color = #873dff, linewidth = weeklyWidth, style = camLineStyle, transp = 0)
+plot(showWeekly and wIsLast ? wH3 : na, title = "Weekly H3", color = #873dff, linewidth = weeklyWidth, style = camLineStyle, transp = 0)
+plot(showWeekly and wIsLast ? wL3 : na, title = "Weekly L3", color = #873dff, linewidth = weeklyWidth, style = camLineStyle, transp = 0)
+plot(showWeekly and wIsLast ? wL4 : na, title = "Weekly L4", color = #873dff, linewidth = weeklyWidth, style = camLineStyle, transp = 0)
+plot(showWeekly and wIsLast ? wL5 : na, title = "Weekly L5", color = #873dff, linewidth = weeklyWidth, style = camLineStyle, transp = 0)
+plot(showWeekly and wIsLast ? wL6 : na, title = "Weekly L6", color = #873dff, linewidth = weeklyWidth, style = camLineStyle, transp = 0)
+plot(showWeekly and showWeeklyMinors and wIsLast ? wL1 : na, title = "Weekly L1", color = #873dff, linewidth = weeklyWidth, style = camLineStyle, transp = 60)
+plot(showWeekly and showWeeklyMinors and wIsLast ? wL2 : na, title = "Weekly L2", color = #873dff, linewidth = weeklyWidth, style = camLineStyle, transp = 60)
+plot(showWeekly and showWeeklyMinors and wIsLast ? wH1 : na, title = "Weekly H1", color = #873dff, linewidth = weeklyWidth, style = camLineStyle, transp = 60)
+plot(showWeekly and showWeeklyMinors and wIsLast ? wH2 : na, title = "Weekly H2", color = #873dff, linewidth = weeklyWidth, style = camLineStyle, transp = 60)
 
 // Yearly Pivots
 [yIsLast, yH6, yH5, yH4, yH3, yH2, yH1, yL1, yL2, yL3, yL4, yL5, yL6] = getData("12M")
 
-plot(showYearly and yIsLast ? yH6 : na, title = "Yearly H6", color = color.orange, linewidth = yearlyWidth, style = linestyle, transp = 0)
-plot(showYearly and yIsLast ? yH5 : na, title = "Yearly H5", color = color.orange, linewidth = yearlyWidth, style = linestyle, transp = 0)
-plot(showYearly and yIsLast ? yH4 : na, title = "Yearly H4", color = color.orange, linewidth = yearlyWidth, style = linestyle, transp = 0)
-plot(showYearly and yIsLast ? yH3 : na, title = "Yearly H3", color = color.orange, linewidth = yearlyWidth, style = linestyle, transp = 0)
-plot(showYearly and yIsLast ? yL3 : na, title = "Yearly L3", color = color.orange, linewidth = yearlyWidth, style = linestyle, transp = 0)
-plot(showYearly and yIsLast ? yL4 : na, title = "Yearly L4", color = color.orange, linewidth = yearlyWidth, style = linestyle, transp = 0)
-plot(showYearly and yIsLast ? yL5 : na, title = "Yearly L5", color = color.orange, linewidth = yearlyWidth, style = linestyle, transp = 0) 
-plot(showYearly and yIsLast ? yL6 : na, title = "Yearly L6", color = color.orange, linewidth = yearlyWidth, style = linestyle, transp = 0) 
-plot(showYearly and showYearlyMinors and yIsLast ? yL1 : na, title = "Yearly L1", color = color.orange, linewidth = yearlyWidth, style = linestyle, transp = 60)
-plot(showYearly and showYearlyMinors and yIsLast ? yL2 : na, title = "Yearly L2", color = color.orange, linewidth = yearlyWidth, style = linestyle, transp = 60)
-plot(showYearly and showYearlyMinors and yIsLast ? yH1 : na, title = "Yearly H1", color = color.orange, linewidth = yearlyWidth, style = linestyle, transp = 60)
-plot(showYearly and showYearlyMinors and yIsLast ? yH2 : na, title = "Yearly H2", color = color.orange, linewidth = yearlyWidth, style = linestyle, transp = 60)
+plot(showYearly and yIsLast ? yH6 : na, title = "Yearly H6", color = color.orange, linewidth = yearlyWidth, style = camLineStyle, transp = 0)
+plot(showYearly and yIsLast ? yH5 : na, title = "Yearly H5", color = color.orange, linewidth = yearlyWidth, style = camLineStyle, transp = 0)
+plot(showYearly and yIsLast ? yH4 : na, title = "Yearly H4", color = color.orange, linewidth = yearlyWidth, style = camLineStyle, transp = 0)
+plot(showYearly and yIsLast ? yH3 : na, title = "Yearly H3", color = color.orange, linewidth = yearlyWidth, style = camLineStyle, transp = 0)
+plot(showYearly and yIsLast ? yL3 : na, title = "Yearly L3", color = color.orange, linewidth = yearlyWidth, style = camLineStyle, transp = 0)
+plot(showYearly and yIsLast ? yL4 : na, title = "Yearly L4", color = color.orange, linewidth = yearlyWidth, style = camLineStyle, transp = 0)
+plot(showYearly and yIsLast ? yL5 : na, title = "Yearly L5", color = color.orange, linewidth = yearlyWidth, style = camLineStyle, transp = 0) 
+plot(showYearly and yIsLast ? yL6 : na, title = "Yearly L6", color = color.orange, linewidth = yearlyWidth, style = camLineStyle, transp = 0) 
+plot(showYearly and showYearlyMinors and yIsLast ? yL1 : na, title = "Yearly L1", color = color.orange, linewidth = yearlyWidth, style = camLineStyle, transp = 60)
+plot(showYearly and showYearlyMinors and yIsLast ? yL2 : na, title = "Yearly L2", color = color.orange, linewidth = yearlyWidth, style = camLineStyle, transp = 60)
+plot(showYearly and showYearlyMinors and yIsLast ? yH1 : na, title = "Yearly H1", color = color.orange, linewidth = yearlyWidth, style = camLineStyle, transp = 60)
+plot(showYearly and showYearlyMinors and yIsLast ? yH2 : na, title = "Yearly H2", color = color.orange, linewidth = yearlyWidth, style = camLineStyle, transp = 60)
 
 // Daily Pivots
 [dIsLast, dH6, dH5, dH4, dH3, dH2, dH1, dL1, dL2, dL3, dL4, dL5, dL6] = getData("D")
 
-plot(showDaily and dIsLast ? dH6 : na, title = "Daily H6", color = color.silver, linewidth = dailyWidth, style = linestyle, transp = 0)
-plot(showDaily and dIsLast ? dH5 : na, title = "Daily H5", color = color.silver, linewidth = dailyWidth, style = linestyle, transp = 0)
-plot(showDaily and dIsLast ? dH4 : na, title = "Daily H4", color = color.silver, linewidth = dailyWidth, style = linestyle, transp = 0)
-plot(showDaily and dIsLast ? dH3 : na, title = "Daily H3", color = color.silver, linewidth = dailyWidth, style = linestyle, transp = 0)
-plot(showDaily and dIsLast ? dL3 : na, title = "Daily L3", color = color.silver, linewidth = dailyWidth, style = linestyle, transp = 0)
-plot(showDaily and dIsLast ? dL4 : na, title = "Daily L4", color = color.silver, linewidth = dailyWidth, style = linestyle, transp = 0)
-plot(showDaily and dIsLast ? dL5 : na, title = "Daily L5", color = color.silver, linewidth = dailyWidth, style = linestyle, transp = 0)
-plot(showDaily and dIsLast ? dL6 : na, title = "Daily L6", color = color.silver, linewidth = dailyWidth, style = linestyle, transp = 0) 
-plot(showDaily and showDailyMinors and dIsLast ? dL1 : na, title = "Daily L1", color = color.silver, linewidth = dailyWidth, style = linestyle, transp = 60)
-plot(showDaily and showDailyMinors and dIsLast ? dL2 : na, title = "Daily L2", color = color.silver, linewidth = dailyWidth, style = linestyle, transp = 60)
-plot(showDaily and showDailyMinors and dIsLast ? dH1 : na, title = "Daily H1", color = color.silver, linewidth = dailyWidth, style = linestyle, transp = 60)
-plot(showDaily and showDailyMinors and dIsLast ? dH2 : na, title = "Daily H2", color = color.silver, linewidth = dailyWidth, style = linestyle, transp = 60)
+plot(showDaily and dIsLast ? dH6 : na, title = "Daily H6", color = color.silver, linewidth = dailyWidth, style = camLineStyle, transp = 0)
+plot(showDaily and dIsLast ? dH5 : na, title = "Daily H5", color = color.silver, linewidth = dailyWidth, style = camLineStyle, transp = 0)
+plot(showDaily and dIsLast ? dH4 : na, title = "Daily H4", color = color.silver, linewidth = dailyWidth, style = camLineStyle, transp = 0)
+plot(showDaily and dIsLast ? dH3 : na, title = "Daily H3", color = color.silver, linewidth = dailyWidth, style = camLineStyle, transp = 0)
+plot(showDaily and dIsLast ? dL3 : na, title = "Daily L3", color = color.silver, linewidth = dailyWidth, style = camLineStyle, transp = 0)
+plot(showDaily and dIsLast ? dL4 : na, title = "Daily L4", color = color.silver, linewidth = dailyWidth, style = camLineStyle, transp = 0)
+plot(showDaily and dIsLast ? dL5 : na, title = "Daily L5", color = color.silver, linewidth = dailyWidth, style = camLineStyle, transp = 0)
+plot(showDaily and dIsLast ? dL6 : na, title = "Daily L6", color = color.silver, linewidth = dailyWidth, style = camLineStyle, transp = 0) 
 
-// Labels60
 if showlabels
+
     // Monthly Labels
     if (showMonthly)
         var label ms3label = na, var label ms4label = na, var label ms5label = na
@@ -142,19 +116,19 @@ if showlabels
         label.delete(ms3label), label.delete(ms4label), label.delete(ms5label), label.delete(ms6label)
         label.delete(mr3label), label.delete(mr4label), label.delete(mr5label), label.delete(mr6label)
         label.delete(ms1label), label.delete(ms2label), label.delete(mr1label), label.delete(mr2label)
-        ms6label := label.new(x = time + chper * 30, y = mL6, text = "L6 " + tostring(Round_it(mL6)),size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        ms3label := label.new(x = time + chper * 30, y = mL3, text = "L3 " + tostring(Round_it(mL3)),size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        ms4label := label.new(x = time + chper * 30, y = mL4, text = "L4 " + tostring(Round_it(mL4)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        ms5label := label.new(x = time + chper * 30, y = mL5, text = "L5 " + tostring(Round_it(mL5)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        mr3label := label.new(x = time + chper * 30, y = mH3, text = "H3 " + tostring(Round_it(mH3)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        mr4label := label.new(x = time + chper * 30, y = mH4, text = "H4 " + tostring(Round_it(mH4)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        mr5label := label.new(x = time + chper * 30, y = mH5, text = "H5 " + tostring(Round_it(mH5)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        mr6label := label.new(x = time + chper * 30, y = mH6, text = "H6 " + tostring(Round_it(mH6)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-       // if (showMonthlyMinors)
-         //   mr1label := label.new(x = time + chper * 30, y = mH1, text = "H1 " + tostring(Round_it(mH1)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-          //  mr2label := label.new(x = time + chper * 30, y = mH2, text = "H2 " + tostring(Round_it(mH2)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-            //ms1label := label.new(x = time + chper * 30, y = mL1, text = "L1 " + tostring(Round_it(mL1)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-            //ms2label := label.new(x = time + chper * 30, y = mL2, text = "L2 " + tostring(Round_it(mL2)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ms6label := label.new(x = time + label_offset * 30, y = mL6, text = "L6 " + tostring(round(mL6)),size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ms3label := label.new(x = time + label_offset * 30, y = mL3, text = "L3 " + tostring(round(mL3)),size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ms4label := label.new(x = time + label_offset * 30, y = mL4, text = "L4 " + tostring(round(mL4)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ms5label := label.new(x = time + label_offset * 30, y = mL5, text = "L5 " + tostring(round(mL5)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        mr3label := label.new(x = time + label_offset * 30, y = mH3, text = "H3 " + tostring(round(mH3)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        mr4label := label.new(x = time + label_offset * 30, y = mH4, text = "H4 " + tostring(round(mH4)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        mr5label := label.new(x = time + label_offset * 30, y = mH5, text = "H5 " + tostring(round(mH5)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        mr6label := label.new(x = time + label_offset * 30, y = mH6, text = "H6 " + tostring(round(mH6)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        if (showMonthlyMinors)
+            mr1label := label.new(x = time + label_offset * 30, y = mH1, text = "H1 " + tostring(round(mH1)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+            mr2label := label.new(x = time + label_offset * 30, y = mH2, text = "H2 " + tostring(round(mH2)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+            ms1label := label.new(x = time + label_offset * 30, y = mL1, text = "L1 " + tostring(round(mL1)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+            ms2label := label.new(x = time + label_offset * 30, y = mL2, text = "L2 " + tostring(round(mL2)), size=size.small,textcolor=color.red, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
     
     // Weekly Labels
     if (showWeekly)
@@ -165,19 +139,19 @@ if showlabels
         label.delete(ws3label), label.delete(ws4label), label.delete(ws5label)
         label.delete(wr3label), label.delete(wr4label), label.delete(wr5label), label.delete(wr6label), label.delete(ws6label)
         label.delete(ws1label), label.delete(ws2label), label.delete(wr1label), label.delete(wr2label)
-        ws3label := label.new(x = time + chper * 40, y = wL3, text = "L3 " + tostring(Round_it(wL3)),size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        ws4label := label.new(x = time + chper * 40, y = wL4, text = "L4 " + tostring(Round_it(wL4)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        ws5label := label.new(x = time + chper * 40, y = wL5, text = "L5 " + tostring(Round_it(wL5)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        wr3label := label.new(x = time + chper * 40, y = wH3, text = "H3 " + tostring(Round_it(wH3)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        wr4label := label.new(x = time + chper * 40, y = wH4, text = "H4 " + tostring(Round_it(wH4)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        wr5label := label.new(x = time + chper * 40, y = wH5, text = "H5 " + tostring(Round_it(wH5)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        ws6label := label.new(x = time + chper * 40, y = wL6, text = "L6 " + tostring(Round_it(wL6)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        wr6label := label.new(x = time + chper * 40, y = wH6, text = "H6 " + tostring(Round_it(wH6)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-       // if (showWeeklyMinors)
-           // wr1label := label.new(x = time + chper * 40, y = wH1, text = "H1 " + tostring(Round_it(wH1)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-          //  wr2label := label.new(x = time + chper * 40, y = wH2, text = "H2 " + tostring(Round_it(wH2)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-           // ws1label := label.new(x = time + chper * 40, y = wL1, text = "L1 " + tostring(Round_it(wL1)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-          //  ws2label := label.new(x = time + chper * 40, y = wL2, text = "L2 " + tostring(Round_it(wL2)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ws3label := label.new(x = time + label_offset * 40, y = wL3, text = "L3 " + tostring(round(wL3)),size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ws4label := label.new(x = time + label_offset * 40, y = wL4, text = "L4 " + tostring(round(wL4)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ws5label := label.new(x = time + label_offset * 40, y = wL5, text = "L5 " + tostring(round(wL5)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        wr3label := label.new(x = time + label_offset * 40, y = wH3, text = "H3 " + tostring(round(wH3)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        wr4label := label.new(x = time + label_offset * 40, y = wH4, text = "H4 " + tostring(round(wH4)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        wr5label := label.new(x = time + label_offset * 40, y = wH5, text = "H5 " + tostring(round(wH5)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ws6label := label.new(x = time + label_offset * 40, y = wL6, text = "L6 " + tostring(round(wL6)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        wr6label := label.new(x = time + label_offset * 40, y = wH6, text = "H6 " + tostring(round(wH6)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        if (showWeeklyMinors)
+            wr1label := label.new(x = time + label_offset * 40, y = wH1, text = "H1 " + tostring(round(wH1)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+            wr2label := label.new(x = time + label_offset * 40, y = wH2, text = "H2 " + tostring(round(wH2)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+            ws1label := label.new(x = time + label_offset * 40, y = wL1, text = "L1 " + tostring(round(wL1)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+            ws2label := label.new(x = time + label_offset * 40, y = wL2, text = "L2 " + tostring(round(wL2)), size=size.small,textcolor=#873dff, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
     
     // Yearly Labels
     if (showYearly)
@@ -188,19 +162,19 @@ if showlabels
         label.delete(ys3label), label.delete(ys4label), label.delete(ys5label)
         label.delete(yr3label), label.delete(yr4label), label.delete(yr5label)
         label.delete(ys1label), label.delete(ys2label), label.delete(yr1label), label.delete(yr2label), label.delete(ys6label), label.delete(yr6label)
-        ys3label := label.new(x = time + chper * 50, y = yL3, text = "L3 " + tostring(Round_it(yL3)),size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        ys4label := label.new(x = time + chper * 50, y = yL4, text = "L4 " + tostring(Round_it(yL4)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        ys5label := label.new(x = time + chper * 50, y = yL5, text = "L5 " + tostring(Round_it(yL5)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        yr3label := label.new(x = time + chper * 50, y = yH3, text = "H3 " + tostring(Round_it(yH3)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        yr4label := label.new(x = time + chper * 50, y = yH4, text = "H4 " + tostring(Round_it(yH4)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        yr5label := label.new(x = time + chper * 50, y = yH5, text = "H5 " + tostring(Round_it(yH5)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        yr6label := label.new(x = time + chper * 50, y = yH6, text = "H6 " + tostring(Round_it(yH6)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        ys6label := label.new(x = time + chper * 50, y = yL6, text = "L6 " + tostring(Round_it(yL6)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ys3label := label.new(x = time + label_offset * 50, y = yL3, text = "L3 " + tostring(round(yL3)),size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ys4label := label.new(x = time + label_offset * 50, y = yL4, text = "L4 " + tostring(round(yL4)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ys5label := label.new(x = time + label_offset * 50, y = yL5, text = "L5 " + tostring(round(yL5)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        yr3label := label.new(x = time + label_offset * 50, y = yH3, text = "H3 " + tostring(round(yH3)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        yr4label := label.new(x = time + label_offset * 50, y = yH4, text = "H4 " + tostring(round(yH4)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        yr5label := label.new(x = time + label_offset * 50, y = yH5, text = "H5 " + tostring(round(yH5)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        yr6label := label.new(x = time + label_offset * 50, y = yH6, text = "H6 " + tostring(round(yH6)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ys6label := label.new(x = time + label_offset * 50, y = yL6, text = "L6 " + tostring(round(yL6)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
         if (showYearlyMinors)
-            yr1label := label.new(x = time + chper * 50, y = yH1, text = "H1 " + tostring(Round_it(yH1)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-            yr2label := label.new(x = time + chper * 50, y = yH2, text = "H2 " + tostring(Round_it(yH2)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-            ys1label := label.new(x = time + chper * 50, y = yL1, text = "L1 " + tostring(Round_it(yL1)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-            ys2label := label.new(x = time + chper * 50, y = yL2, text = "L2 " + tostring(Round_it(yL2)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+            yr1label := label.new(x = time + label_offset * 50, y = yH1, text = "H1 " + tostring(round(yH1)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+            yr2label := label.new(x = time + label_offset * 50, y = yH2, text = "H2 " + tostring(round(yH2)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+            ys1label := label.new(x = time + label_offset * 50, y = yL1, text = "L1 " + tostring(round(yL1)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+            ys2label := label.new(x = time + label_offset * 50, y = yL2, text = "L2 " + tostring(round(yL2)), size=size.small,textcolor=color.orange, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
             
     // Daily Labels
     if (showDaily)
@@ -211,19 +185,14 @@ if showlabels
         label.delete(ds3label), label.delete(ds4label), label.delete(ds5label)
         label.delete(dr3label), label.delete(dr4label), label.delete(dr5label)
         label.delete(ds1label), label.delete(ds2label), label.delete(dr1label), label.delete(dr2label), label.delete(dr6label), label.delete(ds6label)
-        ds3label := label.new(x = time + chper * 60, y = dL3, text = "L3 " + tostring(Round_it(dL3)),size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        ds4label := label.new(x = time + chper * 60, y = dL4, text = "L4 " + tostring(Round_it(dL4)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        ds5label := label.new(x = time + chper * 60, y = dL5, text = "L5 " + tostring(Round_it(dL5)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        dr3label := label.new(x = time + chper * 60, y = dH3, text = "H3 " + tostring(Round_it(dH3)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        dr4label := label.new(x = time + chper * 60, y = dH4, text = "H4 " + tostring(Round_it(dH4)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        dr5label := label.new(x = time + chper * 60, y = dH5, text = "H5 " + tostring(Round_it(dH5)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        dr6label := label.new(x = time + chper * 60, y = dH6, text = "H6 " + tostring(Round_it(dH6)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-        ds6label := label.new(x = time + chper * 60, y = dL6, text = "L6 " + tostring(Round_it(dL6)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-       // if (showDailyMinors)
-           // dr1label := label.new(x = time + chper * 60, y = dH1, text = "H1 " + tostring(Round_it(dH1)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-            //dr2label := label.new(x = time + chper * 60, y = dH2, text = "H2 " + tostring(Round_it(dH2)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-            //ds1label := label.new(x = time + chper * 60, y = dL1, text = "L1 " + tostring(Round_it(dL1)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
-            //ds2label := label.new(x = time + chper * 60, y = dL2, text = "L2 " + tostring(Round_it(dL2)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ds3label := label.new(x = time + label_offset * 60, y = dL3, text = "L3 " + tostring(round(dL3)),size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ds4label := label.new(x = time + label_offset * 60, y = dL4, text = "L4 " + tostring(round(dL4)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ds5label := label.new(x = time + label_offset * 60, y = dL5, text = "L5 " + tostring(round(dL5)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        dr3label := label.new(x = time + label_offset * 60, y = dH3, text = "H3 " + tostring(round(dH3)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        dr4label := label.new(x = time + label_offset * 60, y = dH4, text = "H4 " + tostring(round(dH4)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        dr5label := label.new(x = time + label_offset * 60, y = dH5, text = "H5 " + tostring(round(dH5)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        dr6label := label.new(x = time + label_offset * 60, y = dH6, text = "H6 " + tostring(round(dH6)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
+        ds6label := label.new(x = time + label_offset * 60, y = dL6, text = "L6 " + tostring(round(dL6)), size=size.small,textcolor=color.silver, style=label.style_none, xloc = xloc.bar_time, yloc=yloc.price)
             
           
 //////////
@@ -236,8 +205,8 @@ dDummy = input(title="====== DAILY PIVOTS CPR ======", defval=true)
 dDummy24 = input(title="==============================", defval=true)
 bEnableDailyPivots = input(title="Show Daily CPR", defval=true)
 dailyShowPrevious = input(title="Show Previous", defval=false)
-bEnableDailyHighLow = input(title="Show High and Low", defval=false)
-bEnableDailyLabels = input(title="Show Label", defval=false)
+bEnableDailyHighLow = input(title="Show High and Low", defval=true)
+bEnableDailyLabels = input(title="Show Label", defval=true)
 dailyPivotsWidth = input(title="Width", defval=1, minval=1, step=1)
 
 // Weekly CPR Config
@@ -246,7 +215,7 @@ wDummy = input(title="====== WEEKLY CPR ======", defval=true)
 wDummy24 = input(title="==============================", defval=true)
 bEnableWeeklyPivots = input(title="Show Weekly CPR", defval=true)
 weeklyShowPrevious = input(title="Show Previous", defval=false)
-bEnableWeeklyHighLow = input(title="Show High and Low", defval=false)
+bEnableWeeklyHighLow = input(title="Show High and Low", defval=true)
 bEnableWeeklyLabels = input(title="Show Label", defval=true)
 weeklyPivotsWidth = input(title="Width", defval=1, minval=1, step=1)
 
@@ -256,7 +225,7 @@ mDummy = input(title="====== MONTHLY CPR ======", defval=true)
 mDummy24 = input(title="==============================", defval=true)
 bEnableMonthlyPivots = input(title="Show CPR", defval=true)
 monthlyShowPrevious = input(title="Show Previous", defval=true)
-bEnableMonthlyHighLow = input(title="Show High and Low", defval=false)
+bEnableMonthlyHighLow = input(title="Show High and Low", defval=true)
 bEnableMonthlyLabels = input(title="Show Label", defval=true)
 monthlyPivotsWidth = input(title="Width", defval=1, minval=1, step=1)
 
@@ -266,12 +235,9 @@ yDummy = input(title="====== YEARLY CPR ======", defval=true)
 yDummy24 = input(title="==============================", defval=true)
 bEnableYearlyPivots = input(title="Show CPR", defval=true)
 yearlyShowPrevious = input(title="Show Previous", defval=false)
-bEnableYearlyHighLow = input(title="Show High and Low", defval=false)
+bEnableYearlyHighLow = input(title="Show High and Low", defval=true)
 bEnableYearlyLabels = input(title="Show Label", defval=true)
 yearlyPivotsWidth = input(title="Pivots Width", defval=1, minval=1, step=1)
-
-// Other Config
-showStartMonthVerticalLine = input(defval=false, title="Show vertical line on start of each month")
 
 // Functions
 
@@ -294,14 +260,6 @@ getCPRData(timeFrame, showPrevious) =>
     [P, BC, TC] = getPivot(H,L,C)
     isLast = not(showPrevious) ? security(syminfo.tickerid, timeFrame, barstate.islast, lookahead = true) : true
     [H, L, C, P, BC, TC, isLast]
-	
-vline(BarIndex, Color, LineStyle, LineWidth) =>
-    return = line.new(BarIndex, low - tr, BarIndex, high + tr, xloc.bar_index, extend.both, Color, LineStyle, LineWidth)
-
-// Vertical line each month
-p = timeframe.ismonthly ? "12M" : "M"
-//if change(time(p)) and showStartMonthVerticalLine
-  //  vline(bar_index, #FF800080, line.style_dashed, 1)
 
 //
 // DAILY PIVOTS
@@ -309,32 +267,29 @@ p = timeframe.ismonthly ? "12M" : "M"
 
 [dH, dL, dC, dP, dBC, dTC, disLast] = getCPRData('D', dailyShowPrevious)
 
-//UX
 dpColor = color.fuchsia
-drColor = color.fuchsia
-dsColor = color.fuchsia
 dhlColor = #00bcd4
 dPivotStyle = plot.style_circles
-dSRStyle = plot.style_circles
-dHLStyle = plot.style_circles 
 
-plot(bEnableDailyPivots and disLast and  timeframe.isintraday ? dP : na, title="Daily P", color=dpColor, linewidth=dailyPivotsWidth, style=dPivotStyle)
+// Daily CPR
+plot(bEnableDailyPivots and disLast and timeframe.isintraday ? dP : na, title="Daily P", color=dpColor, linewidth=dailyPivotsWidth, style=dPivotStyle)
 plot(bEnableDailyPivots and disLast and timeframe.isintraday ? dBC : na, title="Daily BC", color=dpColor, linewidth=dailyPivotsWidth, style=dPivotStyle)
 plot(bEnableDailyPivots and disLast and timeframe.isintraday ? dTC : na, title="Daily TC", color=dpColor, linewidth=dailyPivotsWidth, style=dPivotStyle)
 
-//plot(bEnableDailyHighLow and disLast and timeframe.isintraday ? dH : na, title="Daily High", color=dhlColor, linewidth=1, style=plot.style_circles)
-//plot(bEnableDailyHighLow and disLast and timeframe.isintraday ? dL : na, title="Daily Low", color=dhlColor, linewidth=1, style=plot.style_circles) 
+// Daily High/Low
+plot(bEnableDailyHighLow and disLast and timeframe.isintraday ? dH : na, title="Daily High", color=dhlColor, linewidth=1, style=plot.style_circles)
+plot(bEnableDailyHighLow and disLast and timeframe.isintraday ? dL : na, title="Daily Low", color=dhlColor, linewidth=1, style=plot.style_circles) 
 
 // Daily Labels
 if disLast and bEnableDailyLabels
     if bEnableDailyPivots
-        a1 = label.new(x = time + chper * 5, y = dP, text="D-CPR",  style= label.style_none, textcolor=dpColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
+        a1 = label.new(x = time + label_offset * 5, y = dP, text="D-CPR",  style= label.style_none, textcolor=dpColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
         label.delete(a1[1])
-   // if (bEnableDailyHighLow)
-    //    a10 = label.new(x = time + chper * 5, y = dH, text="DH",  style= label.style_none, textcolor=dhlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
-    //    label.delete(a10[1])
-    //    a11 = label.new(x = time + chper * 5, y = dL, text="DL",  style= label.style_none, textcolor=dhlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
-    //    label.delete(a11[1])
+    if bEnableDailyHighLow
+        a10 = label.new(x = time + label_offset * 5, y = dH, text="DH",  style= label.style_none, textcolor=dhlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
+        label.delete(a10[1])
+        a11 = label.new(x = time + label_offset * 5, y = dL, text="DL",  style= label.style_none, textcolor=dhlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
+        label.delete(a11[1])
         
 //
 // WEEKLY PIVOTS
@@ -342,31 +297,28 @@ if disLast and bEnableDailyLabels
 
 [wH, wL, wC, wP, wBC, wTC, wisLast] = getCPRData('W', weeklyShowPrevious)
 
-//UX
 wpColor = #8a2be2
-wrColor = #8a2be2
-wsColor = #8a2be2
 whlColor = #00bcd4
 wPivotStyle = plot.style_circles
-wSRStyle = plot.style_circles
-wHLStyle = plot.style_circles 
 
+// Weekly CPR
 plot(bEnableWeeklyPivots and wisLast ? wP : na, title="Weekly P", color=wpColor, linewidth=weeklyPivotsWidth, style=wPivotStyle)
 plot(bEnableWeeklyPivots and wisLast ? wBC : na, title="Weekly BC", color=wpColor, linewidth=weeklyPivotsWidth, style=wPivotStyle)
 plot(bEnableWeeklyPivots and wisLast ? wTC : na, title="Weekly TC", color=wpColor, linewidth=weeklyPivotsWidth, style=wPivotStyle)
 
-//plot(bEnableWeeklyHighLow and wisLast ? wH : na, title="Weekly High", color=whlColor, linewidth=1, style=plot.style_circles)
-//plot(bEnableWeeklyHighLow and wisLast ? wL : na, title="Weekly Low", color=whlColor, linewidth=1, style=plot.style_circles) 
+// Weekly High/Low
+plot(bEnableWeeklyHighLow and wisLast ? wH : na, title="Weekly High", color=whlColor, linewidth=1, style=wPivotStyle)
+plot(bEnableWeeklyHighLow and wisLast ? wL : na, title="Weekly Low", color=whlColor, linewidth=1, style=wPivotStyle) 
 
 // Weekly Labels
 if wisLast and bEnableWeeklyLabels
-    //if bEnableWeeklyPivots
-       // b1 = label.new(x = time + chper * 5, y = wP, text="W-CPR",  style= label.style_none, textcolor=wpColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
-        //label.delete(b1[1])
+    if bEnableWeeklyPivots
+        b1 = label.new(x = time + label_offset * 5, y = wP, text="W-CPR",  style= label.style_none, textcolor=wpColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
+        label.delete(b1[1])
     if (bEnableWeeklyHighLow)
-        b10 = label.new(x = time + chper * 5, y = wH, text="WH",  style= label.style_none, textcolor=whlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
+        b10 = label.new(x = time + label_offset * 5, y = wH, text="WH",  style= label.style_none, textcolor=whlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
         label.delete(b10[1])
-        b11 = label.new(x = time + chper * 5, y = wL, text="WL",  style= label.style_none, textcolor=whlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
+        b11 = label.new(x = time + label_offset * 5, y = wL, text="WL",  style= label.style_none, textcolor=whlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
         label.delete(b11[1])
         
 //
@@ -375,31 +327,28 @@ if wisLast and bEnableWeeklyLabels
 
 [mH, mL, mC, mP, mBC, mTC, misLast] = getCPRData('M', monthlyShowPrevious)
 
-//UX
 mpColor = #ff1100
-mrColor = #ff1100
-msColor = #ff1100
 mhlColor = #00bcd4
 mPivotStyle = plot.style_circles
-mSRStyle = plot.style_circles
-mHLStyle = plot.style_circles 
 
+// Monthly CPR
 plot(bEnableMonthlyPivots and misLast ? mP : na, title="Monthly P", color=mpColor, linewidth=monthlyPivotsWidth, style=mPivotStyle)
 plot(bEnableMonthlyPivots and misLast ? mBC : na, title="Monthly BC", color=mpColor, linewidth=monthlyPivotsWidth, style=mPivotStyle)
 plot(bEnableMonthlyPivots and misLast ? mTC : na, title="Monthly TC", color=mpColor, linewidth=monthlyPivotsWidth, style=mPivotStyle)
 
-plot(bEnableMonthlyHighLow and misLast ? mH : na, title="Monthly High", color=mhlColor, linewidth=1, style=plot.style_circles)
-plot(bEnableMonthlyHighLow and misLast ? mL : na, title="Monthly Low", color=mhlColor, linewidth=1, style=plot.style_circles) 
+// Monthly High/Low
+plot(bEnableMonthlyHighLow and misLast ? mH : na, title="Monthly High", color=mhlColor, linewidth=1, style=mPivotStyle)
+plot(bEnableMonthlyHighLow and misLast ? mL : na, title="Monthly Low", color=mhlColor, linewidth=1, style=mPivotStyle) 
 
 // Monthly Labels
 if misLast and bEnableMonthlyLabels
-    //if bEnableMonthlyPivots
-      //  c1 = label.new(x = time + chper * 15, y = mP, text="M-CPR",  style= label.style_none, textcolor=mpColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
-    //    label.delete(c1[1])
+    if bEnableMonthlyPivots
+        c1 = label.new(x = time + label_offset * 15, y = mP, text="M-CPR",  style= label.style_none, textcolor=mpColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
+        label.delete(c1[1])
     if (bEnableMonthlyHighLow)
-        c10 = label.new(x = time + chper * 5, y = mH, text="MH",  style= label.style_none, textcolor=mhlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
+        c10 = label.new(x = time + label_offset * 5, y = mH, text="MH",  style= label.style_none, textcolor=mhlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
         label.delete(c10[1])
-        c11 = label.new(x = time + chper * 5, y = mL, text="ML",  style= label.style_none, textcolor=mhlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
+        c11 = label.new(x = time + label_offset * 5, y = mL, text="ML",  style= label.style_none, textcolor=mhlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
         label.delete(c11[1])
         
 //
@@ -408,29 +357,26 @@ if misLast and bEnableMonthlyLabels
 
 [yH, yL, yC, yP, yBC, yTC, yisLast] = getCPRData('12M', yearlyShowPrevious)
 
-//UX
 ypColor = color.orange
-yrColor = color.orange
-ysColor = color.orange
 yhlColor = #00bcd4
 yPivotStyle = plot.style_circles
-ySRStyle = plot.style_circles
-yHLStyle = plot.style_circles 
 
+// Yearly CPR
 plot(bEnableYearlyPivots and yisLast ? yP : na, title="Yearly P", color=ypColor, linewidth=yearlyPivotsWidth, style=yPivotStyle)
 plot(bEnableYearlyPivots and yisLast ? yBC : na, title="Yearly BC", color=ypColor, linewidth=yearlyPivotsWidth, style=yPivotStyle)
 plot(bEnableYearlyPivots and yisLast ? yTC : na, title="Yearly TC", color=ypColor, linewidth=yearlyPivotsWidth, style=yPivotStyle)
 
-plot(bEnableYearlyHighLow and yisLast ? yH : na, title="Yearly High", color=yhlColor, linewidth=1, style=plot.style_circles) 
-plot(bEnableYearlyHighLow and yisLast ? yL : na, title="Yearly Low", color=yhlColor, linewidth=1, style=plot.style_circles) 
+// Yearly High/Low
+plot(bEnableYearlyHighLow and yisLast ? yH : na, title="Yearly High", color=yhlColor, linewidth=1, style=yPivotStyle) 
+plot(bEnableYearlyHighLow and yisLast ? yL : na, title="Yearly Low", color=yhlColor, linewidth=1, style=yPivotStyle) 
 
 // Yearly Labels
 if yisLast and bEnableYearlyLabels
     if bEnableYearlyPivots
-        d1 = label.new(x = time + chper * 15, y = yP, text="Y-CPR",  style= label.style_none, textcolor=ypColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
+        d1 = label.new(x = time + label_offset * 15, y = yP, text="Y-CPR",  style= label.style_none, textcolor=ypColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
         label.delete(d1[1])
     if (bEnableYearlyHighLow)
-        d10 = label.new(x = time + chper * 13, y = yH, text="YH",  style= label.style_none, textcolor=yhlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
+        d10 = label.new(x = time + label_offset * 13, y = yH, text="YH",  style= label.style_none, textcolor=yhlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
         label.delete(d10[1])
-        d11 = label.new(x = time + chper * 13, y = yL, text="YL",  style= label.style_none, textcolor=yhlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
+        d11 = label.new(x = time + label_offset * 13, y = yL, text="YL",  style= label.style_none, textcolor=yhlColor, size=size.normal, xloc = xloc.bar_time, yloc=yloc.price)
         label.delete(d11[1])
